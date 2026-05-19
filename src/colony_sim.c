@@ -21,7 +21,7 @@ int main(void){
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminalSize);
 
 	//The area of the terminal
-	char **world = malloc(sizeof(char)*terminalSize.ws_col*terminalSize.ws_row);
+	char *world = malloc(sizeof(char) * terminalSize.ws_col * terminalSize.ws_row);
 
 
 	Colony colony = {
@@ -30,7 +30,8 @@ int main(void){
 	} ;
 
 	put_pixel(colony.y, colony.x, '#');
-	world[colony.y][colony.x] = '#';
+	// accesso: world[y * terminalSize.ws_col + x]
+	world[colony.y * terminalSize.ws_col + colony.x] = '#';
 
 	while (1) {
 
