@@ -20,6 +20,9 @@ void put_pixel(int row, int col, char c) {
 
 void disableRawMode() {
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig);
+
+    //Show the cursor
+    write(STDOUT_FILENO, "\x1b[?25h", 6);
 }
 
 void enableRawMode() {
@@ -29,4 +32,14 @@ void enableRawMode() {
     struct termios raw = orig;
     raw.c_lflag &= ~(ECHO | ICANON);
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+
+    //Hide the cursor
+    write(STDOUT_FILENO, "\x1b[?25l", 6);
+}
+
+void terminal_rerender(char *world, int cols, int rows){
+	for(int x = 0; x < cols; x++){
+		for(int y = 0; y < rows; y++)
+			put_pixel(y, x, world[x+y]);
+	}
 }

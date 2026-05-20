@@ -32,7 +32,6 @@ int main(void){
 	} ;
 
 	put_pixel(colony.y, colony.x, '#');
-	// accesso: world[y * terminalSize.ws_col + x]
 	world[colony.y * terminalSize.ws_col + colony.x] = '#';
 
 	while (1) {
@@ -43,6 +42,9 @@ int main(void){
 			exit(1);
 		}
 
+		//TODO implement the function to move all colonists
+	
+		terminal_rerender(world, terminalSize.ws_col, terminalSize.ws_row);
 		sleep(1);
 		seconds++;
 
