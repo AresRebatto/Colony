@@ -6,11 +6,14 @@
 
 	struct ColonistNode{
 		Colonist colonist;
-		Colonist *next_colonist;
+		ColonistNode *next_colonist;
 	};
 
 	typedef struct Colony{
 		int x,y;//Where colonist will be generated
 		ColonistNode* colonists;
+		int colonist_num;
 	}Colony;
+
+	int generate_colonist(Colony*);
 #endif

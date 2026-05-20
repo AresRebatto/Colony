@@ -17,6 +17,8 @@
 		// those produced by the colony
 		Sex sex;
 
+		int x, y;
+
 	}Colonist;
 
 #endif
