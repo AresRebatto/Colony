@@ -16,4 +16,5 @@
 	}Colony;
 
 	int generate_colonist(Colony*);
+	void move_all_colonists(Colony *, char *, int, int);
 #endif
