@@ -38,8 +38,9 @@ void enableRawMode() {
 }
 
 void terminal_rerender(char *world, int cols, int rows){
+	int idx = 0;
 	for(int x = 0; x < cols; x++){
-		for(int y = 0; y < rows; y++)
-			put_pixel(y, x, world[x+y]);
+		for(int y = 0; y < rows; y++, idx++)
+			put_pixel(y, x, world[idx]);
 	}
 }
