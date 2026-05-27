@@ -1,7 +1,7 @@
 #include "colonist.h"
 
-#ifndef COLONY
-#define COLONY
+#ifndef COLONY_H
+#define COLONY_H
 	typedef struct ColonistNode ColonistNode;
 
 	struct ColonistNode{

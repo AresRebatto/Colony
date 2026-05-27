@@ -6,8 +6,8 @@
 #define IS_OUT_OF_TERM (new_x < 0 || new_x >= cols || new_y < 0 || new_y >= rows)
 static const int dx[8] = {
     -1, 0, 1,
-     1, 1, 0,
-    -1,-1
+     -1, 1, -1,
+    0,-1
 };
 
 static const int dy[8] = {
@@ -48,8 +48,9 @@ void move_all_colonists(Colony *colony, char *world,  int cols, int rows){
 			3 c 4
 			5 6 7
 		 */
-		int new_y = 0;
+    int new_y = 0;
 		int new_x = 0;
+
 
 		do{
 			int step = rand()%8;

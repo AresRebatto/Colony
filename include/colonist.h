@@ -1,7 +1,7 @@
 #include <stdint.h>
 
-#ifndef COLONIST
-#define COLONIST
+#ifndef COLONIST_H
+#define COLONIST_H
 	typedef enum{
 		MALE,
 		FEMALE

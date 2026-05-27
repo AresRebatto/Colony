@@ -18,7 +18,7 @@ int main(void){
 
 	//random seed
 	clock_gettime(CLOCK_MONOTONIC, &ts);
-	srand(time(NULL));
+	
 	srand(ts.tv_nsec);
 	
 	enableRawMode();

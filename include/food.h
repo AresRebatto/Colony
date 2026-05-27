@@ -1,5 +1,5 @@
-#ifndef FOOD
-#define FOOD
+#ifndef FOOD_H
+#define FOOD_H
 
 typedef enum{
 	APPLE=2,
