@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #define IS_OUT_OF_TERM (new_x < 0 || new_x >= cols || new_y < 0 || new_y >= rows)
-#define IS_NEW_CELL_EMPTY (world[new_y * cols + new_x] != 'o' && world[new_y * cols + new_x] != '#')
+#define IS_NEW_CELL_BUSY (world[new_y * cols + new_x] == 'o' || world[new_y * cols + new_x] == '#')
 static const int dx[8] = {
     -1, 0, 1,
      -1, 1, -1,
@@ -27,7 +27,7 @@ static Coordinates *new_position(ColonistNode *cn,  char *world,  int cols, int 
 		new_x = cn->colonist.x + dx[step];
 		new_y = cn->colonist.y + dy[step];
 
-	}while(IS_OUT_OF_TERM && IS_NEW_CELL_EMPTY);
+	}while(IS_OUT_OF_TERM && IS_NEW_CELL_BUSY);
 
 	Coordinates *coordinates = malloc(sizeof(Coordinates));
 
