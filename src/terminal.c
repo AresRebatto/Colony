@@ -1,10 +1,13 @@
 #include "../include/terminal.h"
+#include "../include/log.h"
 
 #include <termios.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
 #include <stdio.h>
+
+
 struct termios orig;
 
 void move_cursor(int row, int col) {
@@ -38,9 +41,16 @@ void enableRawMode() {
 }
 
 void terminal_rerender(char *world, int cols, int rows){
+
+
 	int idx = 0;
 	for(int x = 0; x < cols; x++){
 		for(int y = 0; y < rows; y++, idx++)
+		{
 			put_pixel(y, x, world[idx]);
+			LOG_DEBUG("index: %d, symbol: %c", idx, world[idx]);
+			// if(world[idx]=='#'){
+			// }
+		}
 	}
 }

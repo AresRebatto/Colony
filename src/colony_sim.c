@@ -11,6 +11,7 @@
 #include "../include/colony.h"
 #include "../include/colonist.h"
 #include "../include/terminal.h"
+#include "../include/log.h"
 
 struct timespec ts;
 
@@ -18,9 +19,10 @@ int main(void){
 
 	//random seed
 	clock_gettime(CLOCK_MONOTONIC, &ts);
-	
+	log_init("logs.txt");
+
 	srand(ts.tv_nsec);
-	
+
 	enableRawMode();
 	fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK); //Read doesn't block the program
 	write(STDOUT_FILENO, "\x1b[2J\x1b[H", 7);
@@ -35,6 +37,7 @@ int main(void){
 	char *world = malloc(sizeof(char) * terminalSize.ws_col * terminalSize.ws_row);
 
 
+	//Generate the colony
 	Colony colony = {
 		.x = rand()%terminalSize.ws_col,
 		.y = rand()%terminalSize.ws_row,
@@ -42,13 +45,14 @@ int main(void){
 	} ;
 
 	put_pixel(colony.y, colony.x, '#');
-	world[colony.y * terminalSize.ws_col + colony.x] = '#';
+	world[colony.y  + colony.x] = '#';
 
 	while (1) {
 		//Generate a new colonist every 5 seconds
 		if(seconds%5 == 0 && generate_colonist(&colony)){
 			disableRawMode();
 			fprintf(stderr, "Allocation error");
+			log_close();
 			exit(1);
 		}
 
@@ -63,6 +67,7 @@ int main(void){
 	        break;
 	}
 
-   disableRawMode();
+	log_close();
+   	disableRawMode();
 	return 0;
 }

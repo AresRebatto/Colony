@@ -48,9 +48,8 @@ void move_all_colonists(Colony *colony, char *world,  int cols, int rows){
 			3 c 4
 			5 6 7
 		 */
-    int new_y = 0;
+		int new_y = 0;
 		int new_x = 0;
-
 
 		do{
 			int step = rand()%8;
