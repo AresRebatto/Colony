@@ -45,22 +45,28 @@ int main(void){
 	} ;
 
 	put_pixel(colony.y, colony.x, '#');
-	world[colony.y  + colony.x] = '#';
+	world[colony.y * terminalSize.ws_col + colony.x] = '#';
+
 
 	while (1) {
 		//Generate a new colonist every 5 seconds
-		if(seconds%5 == 0 && generate_colonist(&colony)){
+		if(seconds%5 == 0 && generate_colonist(&colony, world, terminalSize.ws_col, terminalSize.ws_row )){
 			disableRawMode();
 			fprintf(stderr, "Allocation error");
 			log_close();
 			exit(1);
 		}
 
-		move_all_colonists(&colony, world, terminalSize.ws_col, terminalSize.ws_row);
-		terminal_rerender(world, terminalSize.ws_col, terminalSize.ws_row);
+		if(move_all_colonists(&colony, world, terminalSize.ws_col, terminalSize.ws_row)){
+			disableRawMode();
+			fprintf(stderr, "Allocation error");
+			log_close();
+			exit(1);
+		}
+
 
 		sleep(1);
-
+		terminal_rerender(world, terminalSize.ws_col, terminalSize.ws_row);
 		seconds++;
 
 	    if (read(STDIN_FILENO, &c, 1) == 1 && c == 'q')

@@ -1,7 +1,8 @@
-#include "colonist.h"
-
 #ifndef COLONY_H
 #define COLONY_H
+	#include "colonist.h"
+	#include "coordinates.h"
+
 	typedef struct ColonistNode ColonistNode;
 
 	struct ColonistNode{
@@ -15,6 +16,7 @@
 		int colonist_num;
 	}Colony;
 
-	int generate_colonist(Colony*);
-	void move_all_colonists(Colony *, char *, int, int);
+	static Coordinates *new_position(ColonistNode *cn,  char *world,  int cols, int rows );
+	int generate_colonist(Colony*,  char *world,  int cols, int rows);
+	int move_all_colonists(Colony *, char *, int, int);
 #endif

@@ -1,9 +1,11 @@
 #include "../include/colony.h"
 #include "../include/colonist.h"
+#include "../include/coordinates.h"
 
 #include <stdlib.h>
 
 #define IS_OUT_OF_TERM (new_x < 0 || new_x >= cols || new_y < 0 || new_y >= rows)
+#define IS_NEW_CELL_EMPTY (world[new_y * cols + new_x] != 'o' && world[new_y * cols + new_x] != '#')
 static const int dx[8] = {
     -1, 0, 1,
      -1, 1, -1,
@@ -15,10 +17,32 @@ static const int dy[8] = {
      0, 1, 1,
      1, 0
 };
+static Coordinates *new_position(ColonistNode *cn,  char *world,  int cols, int rows ){
+	int new_y = 0;
+	int new_x = 0;
 
-int generate_colonist(Colony* colony){
+	do{
+		int step = rand()%8;
+
+		new_x = cn->colonist.x + dx[step];
+		new_y = cn->colonist.y + dy[step];
+
+	}while(IS_OUT_OF_TERM && IS_NEW_CELL_EMPTY);
+
+	Coordinates *coordinates = malloc(sizeof(Coordinates));
+
+	if(coordinates == NULL) return NULL;
+
+	coordinates->x = new_x;
+	coordinates->y = new_y;
+
+	return coordinates;
+}
+
+int generate_colonist(Colony* colony,  char *world,  int cols, int rows){
  	ColonistNode *new_node = malloc(sizeof(ColonistNode));
     if (new_node == NULL) return 1;
+
 
     new_node->next_colonist = NULL;
     new_node->colonist.id       = colony->colonist_num;
@@ -26,6 +50,14 @@ int generate_colonist(Colony* colony){
     new_node->colonist.sex      = rand() % 2;
     new_node->colonist.x        = colony->x;
     new_node->colonist.y        = colony->y;
+
+    Coordinates *coordinates = new_position(new_node, world, cols, rows);
+
+    if(coordinates == NULL) return 1;
+
+    //It starts from the colony, but it can't overwrite it
+    new_node->colonist.x        = coordinates->x;
+    new_node->colonist.y        = coordinates->y;
 
     if (colony->colonists == NULL) {
         colony->colonists = new_node;
@@ -37,34 +69,26 @@ int generate_colonist(Colony* colony){
     }
 
     colony->colonist_num++;
-
+    free(coordinates);
 	return 0;
 }
 
-void move_all_colonists(Colony *colony, char *world,  int cols, int rows){
+int move_all_colonists(Colony *colony, char *world,  int cols, int rows){
 	for(ColonistNode *cn = colony->colonists; cn; cn = cn->next_colonist){
-		/*
-			0 1 2
-			3 c 4
-			5 6 7
-		 */
-		int new_y = 0;
-		int new_x = 0;
 
-		do{
-			int step = rand()%8;
+		Coordinates *new_coordinates = new_position(cn, world, cols, rows);
 
-			new_x = cn->colonist.x + dx[step];
-			new_y = cn->colonist.y + dy[step];
+		if(new_coordinates == NULL) return 1;
 
-		}while(IS_OUT_OF_TERM);
+		world[cn->colonist.y * cols + cn->colonist.x] = ' ';
 
-		world[cn->colonist.y + cn->colonist.x] = ' ';
+		cn->colonist.x = new_coordinates->x;
+		cn->colonist.y = new_coordinates->y;
 
-		cn->colonist.x = new_x;
-		cn->colonist.y = new_y;
+		world[cn->colonist.y * cols + cn->colonist.x] = 'o';
 
-		world[cn->colonist.y + cn->colonist.x] = 'o';
-
+		free(new_coordinates);
 	}
+
+	return 0;
 }
