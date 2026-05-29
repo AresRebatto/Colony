@@ -27,7 +27,7 @@ static Coordinates *new_position(ColonistNode *cn,  char *world,  int cols, int 
 		new_x = cn->colonist.x + dx[step];
 		new_y = cn->colonist.y + dy[step];
 
-	}while(IS_OUT_OF_TERM && IS_NEW_CELL_BUSY);
+	}while(IS_OUT_OF_TERM || IS_NEW_CELL_BUSY);
 
 	Coordinates *coordinates = malloc(sizeof(Coordinates));
 
